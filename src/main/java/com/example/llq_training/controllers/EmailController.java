@@ -74,21 +74,11 @@ public class EmailController {
        }
     }
 
-    @PutMapping(value="/put")
-    public ResponseEntity<EmailThongTinNguoiGui> updateById(@RequestBody EmailThongTinNguoiGui emailUpdate){
-        Optional<EmailThongTinNguoiGui> emailOptional = emailRepo.findById(emailUpdate.getId());
-        if(emailOptional.isPresent()){
-            EmailThongTinNguoiGui _email = emailOptional.get();
-            _email.setEmailTo(emailUpdate.getEmailTo());
-            _email.setEmailCc(emailUpdate.getEmailCc());
-            _email.setChucNang(emailUpdate.getChucNang());
-            _email.setNgayGui(emailUpdate.getNgayGui());
-            _email.setNgayTao(emailUpdate.getNgayTao());
-            _email.setNoiDung(emailUpdate.getNoiDung());
-            _email.setTrangThaiGui(emailUpdate.getTrangThaiGui());
-            return new ResponseEntity<>(emailRepo.save(_email), HttpStatus.OK);
-        }else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    @PostMapping(value="/put")
+    public ResponseEntity<String> updateById(@RequestBody EmailThongTinNguoiGui emailUpdate){
+        if(emailService.update(emailUpdate).equals("SUCCESS")){
+            return new ResponseEntity<>("1",HttpStatus.OK);
         }
+        return new ResponseEntity<>("0",HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

@@ -14,4 +14,5 @@ public interface EmailServices {
      List<EmailThongTinNguoiGui> findAll();
      EmailThongTinNguoiGui findById(EmailThongTinNguoiGui emailFind);
      Page<EmailThongTinNguoiGui> filter(Filter filter);
+     String update(EmailThongTinNguoiGui email);
 }

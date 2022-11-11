@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -15,10 +17,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.io.Serial;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import static org.springframework.data.jpa.domain.Specification.where;
 
@@ -109,6 +108,29 @@ public class EmailServicesImplement implements EmailServices {
         };
 
         return emailRepo.findAll(specification, pageable);
+    }
+
+    @Override
+    public String update(EmailThongTinNguoiGui emailUpdate) {
+        Optional<EmailThongTinNguoiGui> emailOptional = emailRepo.findById(emailUpdate.getId());
+        if(emailOptional.isPresent()) {
+            EmailThongTinNguoiGui _email = emailOptional.get();
+
+            if(emailUpdate.getTrangThaiGui() != 0L){
+                _email.setTrangThaiGui(emailUpdate.getTrangThaiGui());
+            }
+           /* _email.setEmailTo(emailUpdate.getEmailTo());
+            _email.setEmailCc(emailUpdate.getEmailCc());
+            _email.setChucNang(emailUpdate.getChucNang());
+            _email.setNgayGui(emailUpdate.getNgayGui());
+            _email.setNgayTao(emailUpdate.getNgayTao());
+            _email.setNoiDung(emailUpdate.getNoiDung());
+            _email.setTrangThaiGui(emailUpdate.getTrangThaiGui());*/
+            emailRepo.save(_email);
+            return "SUCCESS";
+        }
+        return "FAIL";
+
     }
 
 
